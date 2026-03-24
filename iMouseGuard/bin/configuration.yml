@@ -1,0 +1,37 @@
+{
+  "timezone": "UTC",
+  "activity_windows": [
+    {
+      "start": "02:00",
+      "end": "07:00",
+      "type": "ACTIVE",
+      "expected_activity": "HIGH"
+    },
+    {
+      "start": "07:00",
+      "end": "12:00",
+      "type": "SLEEP"
+    },
+    {
+      "start": "12:00",
+      "end": "13:00",
+      "type": "LOW_ACTIVITY"
+    },
+    {
+      "start": "13:00",
+      "end": "17:00",
+      "type": "SLEEP"
+    },
+    {
+      "start": "17:00",
+      "end": "22:00",
+      "type": "HYPER_ACTIVE",
+      "expected_activity": "VERY_HIGH"
+    },
+    {
+      "start": "22:00",
+      "end": "02:00",
+      "type": "SLEEP"
+    }
+  ]
+}

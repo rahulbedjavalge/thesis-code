@@ -1,0 +1,114 @@
+c:\Users\it\OneDrive\Desktop\ai_study\thesis\thesis-code\iMouseGuard\dev\manual_ui\index.htmlc:\Users\it\OneDrive\Desktop\ai_study\thesis\thesis-code\iMouseGuard\dev\manual_ui\index.html<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>iMouseGuard Manual Trigger</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 520px; margin: 40px auto; padding: 0 16px; }
+    h2 { margin-bottom: 12px; }
+    label { display:block; margin-top: 12px; font-weight: 600; }
+    select, input, textarea, button { width: 100%; padding: 10px; margin-top: 6px; }
+    button { cursor: pointer; font-weight: 700; }
+    .row { display:flex; gap:12px; }
+    .row > div { flex: 1; }
+    pre { background:#f6f6f6; padding:12px; overflow:auto; }
+  </style>
+</head>
+<body>
+  <h2>🐭 iMouseGuard Manual Trigger</h2>
+  <p style="color: #666; font-size: 14px; margin-bottom: 20px;">
+    Test the 4 behavioral rules: Select zone ID, set activity score, and click Trigger Alert.<br>
+    <strong>Zone 3:</strong> House/Nest (test occupancy) | 
+    <strong>Zone 4:</strong> Water/Drink (test consumption) | 
+    <strong>Zone 5:</strong> Litter (test box usage)
+  </p>
+
+  <div class="row">
+    <div>
+      <label>Behavior</label>
+      <select id="behavior">
+        <option value="LITTER_ABSENCE">LITTER_ABSENCE</option>
+        <option value="DRINKING_INACTIVITY">DRINKING_INACTIVITY</option>
+        <option value="HOUSE_MOVED">HOUSE_MOVED</option>
+        <option value="HYPERACTIVITY">HYPERACTIVITY</option>
+        <option value="TEST_ALERT">TEST_ALERT</option>
+      </select>
+    </div>
+    <div>
+      <label>Severity</label>
+      <select id="severity">
+        <option value="INFO">INFO</option>
+        <option value="WARNING">WARNING</option>
+        <option value="CRITICAL" selected>CRITICAL</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row">
+    <div>
+      <label>Event ID (optional)</label>
+      <input id="event_id" type="number" placeholder="123" />
+    </div>
+    <div>
+      <label>Monitor ID (optional)</label>
+      <input id="monitor_id" type="number" placeholder="1" />
+    </div>
+  </div>
+
+  <div class="row">
+    <div>
+      <label>Zone ID (for rules testing)</label>
+      <select id="zone_id">
+        <option value="">-- Select Zone --</option>
+        <option value="3">Zone 3: House/Nest</option>
+        <option value="4">Zone 4: Water/Drink</option>
+        <option value="5">Zone 5: Litter</option>
+        <option value="1">Zone 1: Other</option>
+        <option value="2">Zone 2: Other</option>
+      </select>
+    </div>
+    <div>
+      <label>Activity Score (0-100)</label>
+      <input id="score" type="number" min="0" max="100" placeholder="50" />
+    </div>
+  </div>
+
+  <label>Notes</label>
+  <textarea id="notes" rows="3" placeholder="manual test"></textarea>
+
+  <button id="btn">Trigger Alert</button>
+
+  <h3>Response</h3>
+  <pre id="out">Ready.</pre>
+
+  <script>
+    const API = "http://127.0.0.1:8000/trigger";
+
+    document.getElementById("btn").addEventListener("click", async () => {
+      const payload = {
+        behavior: document.getElementById("behavior").value,
+        severity: document.getElementById("severity").value,
+        event_id: Number(document.getElementById("event_id").value) || null,
+        monitor_id: Number(document.getElementById("monitor_id").value) || null,
+        zone_id: Number(document.getElementById("zone_id").value) || 0,
+        score: Number(document.getElementById("score").value) || 0,
+        notes: document.getElementById("notes").value || ""
+      };
+
+      document.getElementById("out").textContent = "Sending...";
+
+      try {
+        const res = await fetch(API, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        const text = await res.text();
+        document.getElementById("out").textContent = `HTTP ${res.status}\n\n${text}`;
+      } catch (e) {
+        document.getElementById("out").textContent = "Error: " + e;
+      }
+    });
+  </script>
+</body>
+</html>

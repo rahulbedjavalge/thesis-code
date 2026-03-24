@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.pytest_cache/
+.mypy_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+prod.env/
+
+# IDE/editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local secrets
+.env
+*.env.local
+*.secret
+*.key
+
+# iMouseGuard runtime
+iMouseGuard/logs/*
+!iMouseGuard/logs/.gitkeep
+iMouseGuard/state/*
+!iMouseGuard/state/.gitkeep
+iMouseGuard/tmp/*
+!iMouseGuard/tmp/.gitkeep
+
+# Analysis outputs
+iMouseGuard/analysis/results/**
+
+# Local test artifacts
+*.log
+*.pid
